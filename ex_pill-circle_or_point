@@ -10,28 +10,25 @@ The other parameter is the center of the circle that you are checking if it coll
 This circle can have radius of 0, making it also work for pill-point collision.
 
 There are 3 steps here:
-1. Define a linesegment madeup of 2 points i.e. p1 and p2 tables below; Define a point to check for collisions with i.e. p
-2. Pretend the linesegment is an infinite line stretching past its endsegments p1 and p2. Draw an imaginary perpendicular line 
-intersecting this infinite line that also contains the point p. local t will test if this perpendicular line actually
-intercepts a point in the original linesegment contained between endsegments p1 and p2. 
+1. Define a linesegment madeup of 2 points i.e. p1 and p2 tables below; Define a point/circle-center to check for collisions with i.e. p
+2. Figureout the shorest distance between the point and the linesegment.
+3. Use standard circle collision with this distance i.e. if dist>r1+r2....we have a collision
+*Remember in normal circle collision: You check if the distance between the centers of two circles is less than the sum of both their radius.
+
+Process:
+Pretend the linesegment is an infinite line stretching past its endsegments p1 and p2. Draw an imaginary perpendicular line 
+intersecting this infinite line that also contains the point p. Check the link about for pictures. 
+local t will test if this perpendicular line actually intercepts a point in the original linesegment contained between endsegments p1 and p2. 
 If it does (t is between 0 and 1) then we calculate the length of that perpendicular line
-and check it against the sum of the radii like in normal circle collision. 
-Remember in normal circle collision: You check if the distance between the centers of two circles is less than the sum of both their radius.
-If t was not between 0 and 1 we know there is no such perependicular line to the closest point...Cause the closest point is not found along the linesegment. 
+and check it against the sum of the radii like in normal circle collision.
+
+If t was not between 0 and 1 we know there is no such perpendicular line to the closest point...Cause the closest point is not found along the linesegment. 
 Infact it means the closest point is one of the endpoints of this linesegment.
-So all we need to do at this point is find the closest endpoint to p. We calculate the hypotenus to each endsegment and choose the smallest one as our distance.
+So all we need to do at this point is find the closest endpoint to p.
+We calculate the hypotenus to each endsegment and choose the smallest one as our distance.
 We do our distance>r+r formula again and that gives us the answer as to whether there is a collision or not, cause it will return true if it does.
 In the example below the hypotenus is squared to rid of the squareroot sign. Meaning the sum of the radii is also squared.
 i.e. Instead of doing (r1+r2)^2, the apparently less costly equivalent of (r1+r2)*(r1+r2) is used
-]]
-
---[[
-Check if a line passing thru the point
-and parallel to the linesegment intersects.
-If so:formula for general line-pt intersection;
-otherwise,closest point is nearest
-endsegment. then just do
-circle collision: dist>r1+r2
 ]]
 
 p={x=84,y=54,r=5}
