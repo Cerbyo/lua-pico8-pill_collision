@@ -1,0 +1,73 @@
+--[[
+Full info:
+Check: https://math.stackexchange.com/questions/2248617/shortest-distance-between-a-point-and-a-line-segment
+If you don't have pico8 then all you are interested in is the pill_collision function being called with tables p,p1,p2.
+The wiki and other articles when u look at them provide formula for lines, not line-segments.
+Pill collision is basically a cylinder shape plastered into 2d. It's 2 circles connected by a linesegment between their centers. 
+The center of these 2 circles constitute p1 and p2 in this example. I refer to these as the endsegments.
+They contain a radius value as well, usually a shared value and you can swap one for the other in this ex.
+The other parameter is the center of the circle that you are checking if it collides with the pill object.
+This circle can have radius of 0, making it also work for pill-point collision.
+
+There are 3 steps here:
+1. Define a linesegment madeup of 2 points i.e. p1 and p2 tables below; Define a point to check for collisions with i.e. p
+2. Pretend the linesegment is an infinite line stretching past its endsegments p1 and p2. Draw an imaginary perpendicular line 
+intersecting this infinite line that also contains the point p. local t will test if this perpendicular line actually
+intercepts a point in the original linesegment contained between endsegments p1 and p2. 
+If it does (t is between 0 and 1) then we calculate the length of that perpendicular line
+and check it against the sum of the radii like in normal circle collision. 
+Remember in normal circle collision: You check if the distance between the centers of two circles is less than the sum of both their radius.
+If t was not between 0 and 1 we know there is no such perependicular line to the closest point...Cause the closest point is not found along the linesegment. 
+Infact it means the closest point is one of the endpoints of this linesegment.
+So all we need to do at this point is find the closest endpoint to p. We calculate the hypotenus to each endsegment and choose the smallest one as our distance.
+We do our distance>r+r formula again and that gives us the answer as to whether there is a collision or not, cause it will return true if it does.
+In the example below the hypotenus is squared to rid of the squareroot sign. Meaning the sum of the radii is also squared.
+i.e. Instead of doing (r1+r2)^2, the apparently less costly equivalent of (r1+r2)*(r1+r2) is used
+]]
+
+--[[
+Check if a line passing thru the point
+and parallel to the linesegment intersects.
+If so:formula for general line-pt intersection;
+otherwise,closest point is nearest
+endsegment. then just do
+circle collision: dist>r1+r2
+]]
+
+p={x=84,y=54,r=5}
+p1={x=64,y=30,r=1}
+p2={x=64,y=60,r=1} collide=false
+function pill_collision(p,p1,p2)--p={x=,y=}
+	local t=-((p1.x-p.x)*(p2.x-p1.x)+(p1.y-p.y)*(p2.y-p1.y))/((p2.x-p1.x)^2+(p2.y-p1.y)^2)
+	--if closest pt perpendicular to lineseg
+	if t>=0 and t<=1 then	return abs(((p2.x-p1.x)*(p1.y-p.y)-(p1.x-p.x)*(p2.y-p1.y)))/sqrt((p2.x-p1.x)^2+(p2.y-p1.y)^2)<p1.r+p.r end
+	--otherwise its nearest endpt
+	local d1=(p1.x-p.x)^2+(p1.y-p.y)^2
+	local d2=(p2.x-p.x)^2+(p2.y-p.y)^2
+	if d1<d2 then return d1<(p1.r+p.r)*(p1.r+p.r) else return d2<(p1.r+p.r)*(p1.r+p.r) end
+end
+function _update()
+	if p1.r<10 then
+	p1.r+=1/2
+	p2.r+=1/2
+	end
+	if btn(0) then p.x-=1 end
+	if btn(1) then p.x+=1 end
+	if btn(2) then p.y-=1 end
+	if btn(3) then p.y+=1 end
+	if pill_collision(p,p1,p2) then collide=true else collide=false end
+end
+function _draw()
+	cls(1)
+	line(p1.x,p1.y,p2.x,p2.y,15)
+	line(p1.x+p1.r,p1.y,p2.x+p1.r,p2.y,15)
+	line(p1.x-p1.r,p1.y,p2.x-p1.r,p2.y,15)
+	pset(p1.x,p1.y,4)
+	pset(p2.x,p2.y,6)
+	pset(p.x,p.y,10)
+	circ(p.x,p.y,p.r,11)
+	circ(p1.x,p1.y,p1.r,9)
+	circ(p2.x,p2.y,p2.r,9)
+	?collide,84,64,8
+?abs(((p2.x-p1.x)*(p1.y-p.y)-(p1.x-p.x)*(p2.y-p1.y)))/sqrt((p2.x-p1.x)^2+(p2.y-p1.y)^2)
+end
