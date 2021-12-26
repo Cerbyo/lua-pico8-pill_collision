@@ -12,7 +12,7 @@ This circle can have radius of 0, making it also work for pill-point collision.
 There are 3 steps here:
 1. Define a linesegment madeup of 2 points i.e. p1 and p2 tables below; Define a point/circle-center to check for collisions with i.e. p
 2. Figureout the shorest distance between the point and the linesegment.
-3. Use standard circle collision with this distance i.e. if dist>r1+r2....we have a collision
+3. Use standard circle collision with this distance i.e. if dist<r1+r2....we have a collision
 *Remember in normal circle collision: You check if the distance between the centers of two circles is less than the sum of both their radius.
 
 Process:
