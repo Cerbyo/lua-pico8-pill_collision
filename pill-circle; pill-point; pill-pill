@@ -124,7 +124,7 @@ function _update()
 end
 function _draw()
 	cls(1)
-	double_pill_collision(p_1,p_2,p1,p2)
+	double_pill_collision(p_1,p_2,p1,p2) --to print debug info, remove otherwise and use the call in _update()
 	line(p1.x,p1.y,p2.x,p2.y,15)
 	line(p1.x+p1.r,p1.y,p2.x+p1.r,p2.y,15)
 	line(p1.x-p1.r,p1.y,p2.x-p1.r,p2.y,15)
