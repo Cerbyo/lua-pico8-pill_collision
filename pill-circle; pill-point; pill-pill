@@ -87,18 +87,20 @@ function double_pill_collision(p_1,p_2,p1,p2)--pill vs pill
 	 if t4>=0 and t4<=1 then
 	 a[4]=abs(((p_2.x-p_1.x)*(p_1.y-p2.y)-(p_1.x-p2.x)*(p_2.y-p_1.y)))/sqrt((p_2.x-p_1.x)^2+(p_2.y-p_1.y)^2)
 	else a[4]=100 end
-	current=a[1]
-	for i=2,#a do
+	--any case where it's on or perp to the line segment is ~=100
+	--why 100? arbitrary placeholder+limit to skip over ones not considered this frame.	
+	
+	current=a[1] 	for i=2,#a do
 		if current>a[i] then
-			current=a[i]
+			current=a[i] --grabs smallest/closest of the 4
 		end
 	end
 	?"current"..current
 	if current~=100 and current>=0 then
 		return current<p_1.r+p1.r 
 	else--must check nearest endpoint incase both circles overlapping
-		--p_1 and p1
 		local b={}
+		--p_1 and p1
 		b[1]=(p1.x-p_1.x)^2+(p1.y-p_1.y)^2
 		--p_1 and p2
 		b[2]=(p2.x-p_1.x)^2+(p2.y-p_1.y)^2
@@ -113,7 +115,7 @@ function double_pill_collision(p_1,p_2,p1,p2)--pill vs pill
 		?b[4]
 		for i=2,#b do
 			if current>b[i] then
-				current=b[i]
+				current=b[i] --we grab the closest endpoint
 			end
 		end
 		?"currenttt"..current
@@ -125,7 +127,7 @@ function _update()
 	if btn(1) then p_1.x+=1 p_2.x+=1 end
 	if btn(2) then p_1.y-=1 p_2.y-=1 end
 	if btn(3) then p_1.y+=1 p_2.y+=1 end
-	if double_pill_collision(p_1,p_2,p1,p2) then collide=true else collide=false end
+	if double_pill_collision(p_1,p_2,p1,p2) then collide=true else collide=false end --can swap double_pill_collision(..) with pill_collision(p_1,p1,p2)
 end
 function _draw()
 	cls(1)
@@ -136,7 +138,7 @@ function _draw()
 	pset(p1.x,p1.y,4)
 	pset(p2.x,p2.y,6)
 	pset(p_1.x,p_1.y,10)
---player
+--player (comment out p_2's data if doing pill-circ collision)
 	circ(p_1.x,p_1.y,p_1.r,11)
 	circ(p_2.x,p_2.y,p_2.r,10)
 	line(p_1.x,p_1.y,p_2.x,p_2.y,15)
