@@ -17,7 +17,7 @@ There are 3 steps here:
 
 Process:
 Pretend the linesegment is an infinite line stretching past its endsegments p1 and p2. Draw an imaginary perpendicular line 
-intersecting this infinite line that also contains the point p. Check the link about for pictures. 
+intersecting this infinite line that also contains the point p. Check the link above for pictures. 
 local t will test if this perpendicular line actually intercepts a point in the original linesegment contained between endsegments p1 and p2. 
 If it does (t is between 0 and 1) then we calculate the length of that perpendicular line
 and check it against the sum of the radii like in normal circle collision.
@@ -28,7 +28,7 @@ So all we need to do at this point is find the closest endpoint to p.
 We calculate the hypotenus to each endsegment and choose the smallest one as our distance.
 We do our distance>r+r formula again and that gives us the answer as to whether there is a collision or not, cause it will return true if it does.
 In the example below the hypotenus is squared to rid of the squareroot sign. Meaning the sum of the radii is also squared.
-i.e. Instead of doing (r1+r2)^2, the apparently less costly equivalent of (r1+r2)*(r1+r2) is used
+i.e. Instead of doing sqrt(dist)<r1+r2 we do (dist)<(r1+r2)*(r1+r2)
 
 The code below is setup for pill-pill collision. Basically the process is a more repeated form of the above.
 
