@@ -5,7 +5,9 @@ If you don't have pico8 then all you are interested in is the pill_collision fun
 The wiki and other articles when u look at them provide formula for lines, not line-segments.
 Pill collision is basically a cylinder shape plastered into 2d. It's 2 circles connected by a linesegment between their centers. 
 The center of these 2 circles constitute p1 and p2 in this example. I refer to these as the endsegments.
-They contain a radius value as well, usually a shared value and you can swap one for the other in this ex.
+They contain a radius value as well, usually a shared value and you can swap one for the other in this ex. If you wanted each end of the pills to have
+different radii, you would have to make sure the proper value is inserted when checking 1 endpoint vs another. And if the closest point was on the line segment:
+let's say r=2---r=4, well if t=0.5 ur radius to use in the calculation is r=3. 
 The other parameter is the center of the circle that you are checking if it collides with the pill object.
 This circle can have radius of 0, making it also work for pill-point collision.
 
@@ -26,7 +28,7 @@ If t was not between 0 and 1 we know there is no such perpendicular line to the 
 Infact it means the closest point is one of the endpoints of this linesegment.
 So all we need to do at this point is find the closest endpoint to p.
 We calculate the hypotenus to each endsegment and choose the smallest one as our distance.
-We do our distance>r+r formula again and that gives us the answer as to whether there is a collision or not, cause it will return true if it does.
+We do our distance<r+r formula again and that gives us the answer as to whether there is a collision or not, cause it will return true if it does.
 In the example below the hypotenus is squared to rid of the squareroot sign. Meaning the sum of the radii is also squared.
 i.e. Instead of doing sqrt(dist)<r1+r2 we do (dist)<(r1+r2)*(r1+r2)
 
