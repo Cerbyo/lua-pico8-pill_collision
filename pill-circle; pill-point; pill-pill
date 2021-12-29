@@ -53,7 +53,7 @@ The code for pill-pill i.e. double_pill_collision() isn't optimized, it can be c
 p_1={x=84,y=54,r=5} --if doing pill-circle/pt collision just use this as p in pill_collision, ignore p_2 i.e. pill_collision(p_1,p1,p2) 
 p_2={x=124,y=54,r=5}
 --pill/cylinder
-p1={x=64,y=30,r=15}
+p1={x=64,y=30,r=15} --note: if r is small like r=2, u can get a 1 pixel rounding error when colliding on the right of the cyl, compensate via offsets/ flr|ceilrounding
 p2={x=64,y=60,r=15} collide=false
 function pill_collision(p,p1,p2)--p={x=,y=}; point/circ vs pill
 	--p to p1p2
